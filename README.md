@@ -2,7 +2,7 @@
 
 Markdown in, HTML out. Built on Zola.
 
-[中文](#中文) | [English](#english)
+[crates.io](https://crates.io/crates/mdout) | [v0.2.0 Release](https://github.com/labspc/mdout/releases/tag/v0.2.0) | [中文](#中文) | [English](#english)
 
 ## 中文
 
@@ -13,6 +13,31 @@ mdout 是一个基于 Zola 的写作、发布和阅读产品。Zola 负责把 Ma
 - 写文章方便。
 - 发布过程可靠。
 - 阅读体验舒适。
+
+### v0.2.0
+
+v0.2.0 把 mdout 从完整站点源码完善为可安装的博客脚手架产品。它提供：
+
+- `mdout init`：离线生成独立博客仓库，不带 Rust 源码。
+- `mdout doctor`：检查站点结构以及固定的 mdout、Zola 版本。
+- `mdout check`：检查 Frontmatter、日期、标签、图片、TeX 和 Mermaid。
+- `mdout serve`：在本地预览站点并包含草稿。
+- `mdout build`：检查内容后生成可部署的静态 HTML。
+- `mdout links`：检查文章外链并生成静态状态报告。
+- 完整阅读界面：中英文、搜索、标签、归档、RSS、深色模式和响应式排版。
+- 本地渲染资源：KaTeX 公式、Mermaid 图表、代码高亮与复制按钮，不依赖 CDN。
+- 可靠发布：生成的站点自带 CI、GitHub Pages 和自定义域名工作流。
+
+最短使用流程：
+
+```sh
+cargo install mdout --version 0.2.0 --locked
+mdout init my-blog --title "我的博客" --base-url "https://example.com/"
+cd my-blog
+mdout serve
+```
+
+包地址：[crates.io/crates/mdout](https://crates.io/crates/mdout)。
 
 ### mdout 和 Zola 的关系
 
@@ -342,6 +367,31 @@ It serves three goals:
 - Make articles easy to write.
 - Make publishing reliable.
 - Make reading comfortable.
+
+### v0.2.0
+
+v0.2.0 turns mdout from a full site source tree into an installable blog scaffold product. It provides:
+
+- `mdout init`: generate a standalone blog repository offline, without Rust sources.
+- `mdout doctor`: verify the site layout and pinned mdout and Zola versions.
+- `mdout check`: validate Frontmatter, dates, tags, images, TeX, and Mermaid.
+- `mdout serve`: preview the site locally with drafts included.
+- `mdout build`: validate content and generate deployable static HTML.
+- `mdout links`: check article links and generate a static status report.
+- A complete reading interface with Chinese/English, search, tags, archives, RSS, dark mode, and responsive typography.
+- Local rendering assets for KaTeX, Mermaid, syntax highlighting, and code copying, without CDN dependencies.
+- Reliable publishing through bundled CI, GitHub Pages, and custom-domain workflows.
+
+The shortest path to a working site is:
+
+```sh
+cargo install mdout --version 0.2.0 --locked
+mdout init my-blog --title "My blog" --base-url "https://example.com/"
+cd my-blog
+mdout serve
+```
+
+Package: [crates.io/crates/mdout](https://crates.io/crates/mdout).
 
 ### How mdout relates to Zola
 
