@@ -43,6 +43,8 @@ jobs:
           fi
           echo "site_url=$site_url" >> "$GITHUB_OUTPUT"
       - run: mdout check
+      - name: Check external links
+        run: mdout links --force
       - run: mdout build --base-url "${{ steps.site.outputs.site_url }}"
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
