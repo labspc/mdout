@@ -2,6 +2,23 @@
 
 All notable changes to mdout are documented in this file.
 
+## [0.2.0] - 2026-08-28
+
+### Added
+
+- `mdout init` for generating a complete standalone blog repository offline.
+- Embedded templates, styles, scripts, local KaTeX/Mermaid assets, content skeleton, and reports.
+- A generated-site `mdout.toml` manifest that pins the mdout and Zola versions.
+- Generated-site CI and GitHub Pages workflows that install the published CLI.
+- Scaffold integration tests that build the generated site at a subpath.
+- crates.io package metadata and deterministic package contents.
+- Prebuilt Linux, macOS, and Windows CLI archives in GitHub Releases.
+
+### Changed
+
+- mdout is now distributed as a scaffold CLI as well as a full source package.
+- `doctor` validates the site manifest before invoking Zola.
+
 ## [0.1.0] - 2026-08-28
 
 ### Added

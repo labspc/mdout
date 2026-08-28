@@ -66,33 +66,45 @@ mdout check
 GitHub Pages 发布
 ```
 
-### 环境要求
+### 安装与创建站点
 
-- Rust stable
+- Rust 1.85 或更新版本
 - Zola 0.23.4
 
-安装完成后，在仓库根目录运行：
+从 crates.io 安装固定版本的 CLI：
 
 ```sh
-cargo run -- doctor
+cargo install mdout --version 0.2.0 --locked
+mdout init my-blog \
+  --title "我的博客" \
+  --base-url "https://example.com/" \
+  --author "Your name"
+cd my-blog
+mdout doctor
+mdout serve
 ```
+
+`init` 完全离线运行，CLI 已经内嵌模板、样式、浏览器脚本和初始内容。生成结果是一个独立的博客仓库，不包含 Rust 源码；日常写作只需要 Markdown、`mdout` 和 Zola。
 
 如果 Zola 不在 `PATH` 中，通过 `MDOUT_ZOLA` 指定其位置：
 
 ```sh
-MDOUT_ZOLA=/path/to/zola cargo run -- doctor
+MDOUT_ZOLA=/path/to/zola mdout doctor
 ```
 
-`doctor` 会检查 mdout 版本、Zola 版本、`zola.toml` 和 `content/`。
+`doctor` 会检查 `mdout.toml` 中固定的 mdout/Zola 版本、`zola.toml` 和 `content/`。
 
 ### 创建自己的博客
 
-1. Fork 这个仓库。
-2. 在 `zola.toml` 中修改 `base_url`、`title` 和 `author`。
-3. 按需设置 `[extra]` 中的 `repository_url` 和 `copyright`。
-4. 替换 `static/icon.png`。
-5. 修改 `content/about.md` 和 `content/about.en.md`。
-6. 在 `content/posts/` 中添加文章。
+推荐使用 `mdout init` 创建只包含博客文件的新仓库。也可以 Fork 完整源码仓库来修改 CLI 或产品本身。
+
+生成站点后：
+
+1. 在 `zola.toml` 中确认 `base_url`、`title` 和 `author`。
+2. 按需设置 `[extra]` 中的 `repository_url` 和 `copyright`。
+3. 替换 `static/icon.png`。
+4. 修改 `content/about.md` 和 `content/about.en.md`。
+5. 在 `content/posts/` 中添加文章。
 
 上游仓库不附带生产文章。用于检查排版的内容只存在于 `tests/fixtures/visual/`，不会进入正式站点。
 
@@ -134,7 +146,7 @@ Frontmatter 规则：
 本地预览会包含草稿：
 
 ```sh
-cargo run -- serve
+mdout serve
 ```
 
 默认地址为 `http://127.0.0.1:1111/`。
@@ -142,7 +154,7 @@ cargo run -- serve
 生产构建默认过滤 `draft: true` 的文章。需要临时构建草稿时使用：
 
 ```sh
-cargo run -- build --drafts
+mdout build --drafts
 ```
 
 ### 中英文文章
@@ -214,17 +226,17 @@ mdout 会为代码块增加文件名标签和复制按钮。
 
 ### CLI
 
-开发阶段可以直接通过 Cargo 运行：
+在生成的博客仓库中直接运行：
 
 ```sh
-cargo run -- doctor
-cargo run -- check
-cargo run -- serve
-cargo run -- build
-cargo run -- links
+mdout doctor
+mdout check
+mdout serve
+mdout build
+mdout links
 ```
 
-也可以安装到本机：
+开发 mdout 本身时，也可以从源码安装：
 
 ```sh
 cargo install --path .
@@ -233,13 +245,14 @@ mdout doctor
 
 命令说明：
 
+- `init`：离线生成不含 Rust 源码的独立博客仓库。
 - `doctor`：检查仓库结构和固定的 Zola 版本。
 - `check`：检查 Frontmatter、日期、标签、图片、TeX 和 Mermaid。
 - `serve`：包含草稿并启动本地预览。
 - `build`：先检查内容，再构建到 `public/`。
 - `links`：检查外部链接并更新 `reports/links.json`。
 
-完整参数通过 `cargo run -- <command> --help` 查看。
+完整参数通过 `mdout <command> --help` 查看。
 
 ### 搜索、标签和外链
 
@@ -250,7 +263,7 @@ Zola 为每种语言生成搜索 JSON，mdout 在浏览器中提供搜索弹窗�
 外链检查需要网络访问：
 
 ```sh
-cargo run -- links
+mdout links
 ```
 
 检查结果写入 `reports/links.json`，站点的外链状态页面读取这份静态报告。使用 `--strict` 可以让不可访问的链接导致命令失败。
@@ -283,6 +296,7 @@ Pages 工作流会自动区分：
 content/                 正式 Markdown 内容
 reports/                 外链检查报告
 sass/                    阅读界面样式
+scaffold/                独立博客专用 README 和工作流
 src/                     Rust CLI 与内容检查
 static/js/               搜索、主题、公式、图表和复制交互
 static/vendor/           本地 KaTeX 与 Mermaid
@@ -311,7 +325,7 @@ fixture 会验证：
 
 ### 维护 Fork
 
-个人文章和站点配置保留在自己的 Fork 中。同步上游时重点检查 `templates/`、`sass/`、`static/`、`src/` 和工作流的变化，然后重新运行完整验证。
+`mdout init` 生成的博客是独立仓库，固定使用 mdout 0.2.0，不需要持续同步产品源码。需要修改产品本身时再 Fork 上游源码。
 
 上游不会要求个人文章采用额外数据库结构，也不会改变“Markdown 文件就是内容”的基本模型。
 
@@ -381,33 +395,45 @@ Push Git commits
 Publish with GitHub Pages
 ```
 
-### Requirements
+### Install and create a site
 
-- Rust stable
+- Rust 1.85 or newer
 - Zola 0.23.4
 
-After installing both, run this command from the repository root:
+Install the pinned CLI release from crates.io:
 
 ```sh
-cargo run -- doctor
+cargo install mdout --version 0.2.0 --locked
+mdout init my-blog \
+  --title "My blog" \
+  --base-url "https://example.com/" \
+  --author "Your name"
+cd my-blog
+mdout doctor
+mdout serve
 ```
+
+`init` works entirely offline because the CLI embeds the templates, styles, browser scripts, and initial content. It creates a standalone blog repository without Rust sources; everyday writing only needs Markdown, `mdout`, and Zola.
 
 If Zola is not on `PATH`, provide its executable through `MDOUT_ZOLA`:
 
 ```sh
-MDOUT_ZOLA=/path/to/zola cargo run -- doctor
+MDOUT_ZOLA=/path/to/zola mdout doctor
 ```
 
-`doctor` checks the mdout version, Zola version, `zola.toml`, and `content/`.
+`doctor` checks the pinned mdout and Zola versions in `mdout.toml`, plus `zola.toml` and `content/`.
 
 ### Start your own blog
 
-1. Fork this repository.
-2. Set `base_url`, `title`, and `author` in `zola.toml`.
-3. Optionally set `repository_url` and `copyright` under `[extra]`.
-4. Replace `static/icon.png`.
-5. Edit `content/about.md` and `content/about.en.md`.
-6. Add articles under `content/posts/`.
+Use `mdout init` to create a new repository containing only the blog. Fork the full source repository when you want to change the CLI or product itself.
+
+After generating a site:
+
+1. Confirm `base_url`, `title`, and `author` in `zola.toml`.
+2. Optionally set `repository_url` and `copyright` under `[extra]`.
+3. Replace `static/icon.png`.
+4. Edit `content/about.md` and `content/about.en.md`.
+5. Add articles under `content/posts/`.
 
 The upstream repository contains no production articles. Reading samples live only under `tests/fixtures/visual/` and are never included in the production site.
 
@@ -449,7 +475,7 @@ There is no `new` or `publish` command. Markdown files are the content source, d
 Local preview includes drafts:
 
 ```sh
-cargo run -- serve
+mdout serve
 ```
 
 The default address is `http://127.0.0.1:1111/`.
@@ -457,7 +483,7 @@ The default address is `http://127.0.0.1:1111/`.
 Production builds exclude articles with `draft: true`. To include them temporarily:
 
 ```sh
-cargo run -- build --drafts
+mdout build --drafts
 ```
 
 ### Chinese and English articles
@@ -529,17 +555,17 @@ mdout adds the filename label and copy button in the browser.
 
 ### CLI
 
-Run commands through Cargo during development:
+Run these commands directly in a generated blog repository:
 
 ```sh
-cargo run -- doctor
-cargo run -- check
-cargo run -- serve
-cargo run -- build
-cargo run -- links
+mdout doctor
+mdout check
+mdout serve
+mdout build
+mdout links
 ```
 
-Or install the binary locally:
+When developing mdout itself, you can also install it from source:
 
 ```sh
 cargo install --path .
@@ -548,13 +574,14 @@ mdout doctor
 
 Commands:
 
+- `init`: generate a standalone blog repository offline, without Rust sources.
 - `doctor`: verify the repository layout and pinned Zola version.
 - `check`: validate Frontmatter, dates, tags, images, TeX, and Mermaid.
 - `serve`: start a local preview that includes drafts.
 - `build`: validate content and then build into `public/`.
 - `links`: check external URLs and update `reports/links.json`.
 
-Run `cargo run -- <command> --help` for all options.
+Run `mdout <command> --help` for all options.
 
 ### Search, tags, and external links
 
@@ -565,7 +592,7 @@ Tags come from article Frontmatter. When no tagged articles exist, mdout hides t
 External-link checks require network access:
 
 ```sh
-cargo run -- links
+mdout links
 ```
 
 Results are written to `reports/links.json` and displayed by the static link-status page. Pass `--strict` to fail when a link is unreachable.
@@ -598,6 +625,7 @@ A fork therefore does not need to hardcode its repository subpath.
 content/                 Production Markdown content
 reports/                 External-link reports
 sass/                    Reading interface styles
+scaffold/                Standalone-blog README and workflows
 src/                     Rust CLI and content validation
 static/js/               Search, theme, math, diagrams, and copy interactions
 static/vendor/           Local KaTeX and Mermaid distributions
@@ -626,7 +654,7 @@ The fixture verifies:
 
 ### Maintain a fork
 
-Keep personal articles and site configuration in your fork. When pulling upstream changes, review `templates/`, `sass/`, `static/`, `src/`, and workflow changes, then run the full verification suite again.
+A blog created by `mdout init` is an independent repository pinned to mdout 0.2.0, so it does not need to track product source continuously. Fork the upstream source only when changing mdout itself.
 
 Upstream changes will not require a content database or alter the basic model that Markdown files are the source of truth.
 

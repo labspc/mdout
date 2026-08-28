@@ -24,4 +24,5 @@ jobs:
       - run: cargo run --locked -- doctor
       - run: cargo run --locked -- check
       - run: scripts/verify-fixture.sh
+      - run: scripts/verify-scaffold.sh
       - run: cargo run --locked -- build --base-url https://example.com/
