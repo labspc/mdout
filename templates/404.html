@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}<title>{{ trans(key="not_found_title") }} | {{ config.title }}</title>{% endblock title %}
+{% block content %}
+  <section class="not-found">
+    <h1>{{ trans(key="not_found_title") }}</h1>
+    <p>{{ trans(key="not_found_description") }}</p>
+    <p><a href="{{ get_url(path='/', lang=lang) }}">{{ trans(key="back_home") }}</a></p>
+  </section>
+{% endblock content %}

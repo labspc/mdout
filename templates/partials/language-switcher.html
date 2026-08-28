@@ -1,0 +1,27 @@
+{% set_global language_zh_url = get_url(path='/', lang='zh') %}
+{% set_global language_en_url = get_url(path='/', lang='en') %}
+{% if taxonomy is defined or term is defined %}
+  {% set_global language_zh_url = get_url(path='tags', lang='zh') %}
+  {% set_global language_en_url = get_url(path='tags', lang='en') %}
+{% endif %}
+{% if lang == "zh" %}
+  {% set_global language_zh_url = current_url | default(value=language_zh_url) %}
+{% else %}
+  {% set_global language_en_url = current_url | default(value=language_en_url) %}
+{% endif %}
+{% if page is defined %}
+  {% for translation in page.translations %}
+    {% if translation.lang == "zh" %}{% set_global language_zh_url = translation.permalink %}{% endif %}
+    {% if translation.lang == "en" %}{% set_global language_en_url = translation.permalink %}{% endif %}
+  {% endfor %}
+{% elif section is defined %}
+  {% for translation in section.translations %}
+    {% if translation.lang == "zh" %}{% set_global language_zh_url = translation.permalink %}{% endif %}
+    {% if translation.lang == "en" %}{% set_global language_en_url = translation.permalink %}{% endif %}
+  {% endfor %}
+{% endif %}
+<nav class="language-switcher" aria-label="{{ trans(key='language') }}">
+  <a href="{{ language_zh_url | safe }}" lang="zh" hreflang="zh"{% if lang == "zh" %} aria-current="page"{% endif %}>中</a>
+  <span aria-hidden="true">/</span>
+  <a href="{{ language_en_url | safe }}" lang="en" hreflang="en"{% if lang == "en" %} aria-current="page"{% endif %}>EN</a>
+</nav>

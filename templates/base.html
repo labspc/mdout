@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="{{ lang }}" dir="ltr" data-theme="light">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block title %}<title>{{ config.title }}</title>{% endblock title %}
+    <meta name="description" content="{% block description %}{{ config.description }}{% endblock description %}">
+    <meta name="generator" content="mdout">
+    <meta property="og:site_name" content="{{ config.title }}">
+    <meta property="og:title" content="{% block social_title %}{{ config.title }}{% endblock social_title %}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ current_url | default(value=config.base_url) | safe }}">
+    <meta property="og:locale" content="{{ trans(key='opengraph_locale') }}">
+    <meta name="twitter:card" content="summary">
+    <link rel="canonical" href="{{ current_url | default(value=config.base_url) | safe }}">
+    {% if page is defined %}
+      {% for translation in page.translations %}<link rel="alternate" hreflang="{{ translation.lang }}" href="{{ translation.permalink | safe }}">{% endfor %}
+    {% elif section is defined %}
+      {% for translation in section.translations %}<link rel="alternate" hreflang="{{ translation.lang }}" href="{{ translation.permalink | safe }}">{% endfor %}
+    {% endif %}
+    <link rel="icon" href="{{ get_url(path='icon.png') }}">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ get_url(path='index.xml', lang=lang) }}">
+    <link rel="stylesheet" href="{{ get_url(path='main.css') }}">
+    <script src="{{ get_url(path='js/theme.js') }}"></script>
+    {% block head %}{% endblock head %}
+  </head>
+  <body>
+    {% set tags_taxonomy = get_taxonomy(kind="tags", required=false) %}
+    <div class="site-shell">
+      {% include "partials/sidebar.html" %}
+      <main>{% block content %}{% endblock content %}</main>
+      <aside class="right-sidebar">{% block right_sidebar %}{% endblock right_sidebar %}</aside>
+      {% include "partials/footer.html" %}
+    </div>
+    {% include "partials/search.html" %}
+    <script src="{{ get_url(path='js/search.js') }}" defer></script>
+    {% block scripts %}{% endblock scripts %}
+  </body>
+</html>

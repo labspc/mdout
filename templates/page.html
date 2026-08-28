@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}<title>{{ page.title }} | {{ config.title }}</title>{% endblock title %}
+{% block description %}{{ page.description | default(value=config.description) }}{% endblock description %}
+{% block social_title %}{{ page.title }} | {{ config.title }}{% endblock social_title %}
+{% block head %}
+  {% if page.ancestors | length > 1 %}
+    <link rel="preload" href="{{ get_url(path='vendor/katex/fonts/KaTeX_Main-Regular.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ get_url(path='vendor/katex/fonts/KaTeX_Size2-Regular.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="{{ get_url(path='vendor/katex/katex.min.css') }}">
+    <script src="{{ get_url(path='vendor/katex/katex.min.js') }}" defer></script>
+    <script src="{{ get_url(path='vendor/katex/auto-render.min.js') }}" defer></script>
+  {% endif %}
+{% endblock head %}
+
+{% block content %}
+  <article class="article">
+    <nav class="breadcrumbs" aria-label="{{ trans(key='breadcrumbs') }}">
+      <a href="{{ get_url(path='/', lang=lang) }}">{{ trans(key="home") }}</a>
+      {% for ancestor in page.ancestors %}
+        {% if not loop.first %}
+          {% set parent = get_section(path=ancestor, metadata_only=true) %}
+          <span aria-hidden="true">/</span><a href="{{ parent.permalink }}">{{ parent.title }}</a>
+        {% endif %}
+      {% endfor %}
+      <span aria-hidden="true">/</span><span aria-current="page">{{ page.title }}</span>
+    </nav>
+    <header class="article-header">
+      <h1>{{ page.title }}</h1>
+      {% if page.date %}
+        {% set date_format = trans(key="date_format") %}
+        <p class="article-meta"><time datetime="{{ page.date }}">{{ page.date | date(format=date_format) }}</time> · {{ page.reading_time }} {{ trans(key="minute_read") }}</p>
+      {% endif %}
+      {% if page.taxonomies.tags %}
+        <ul class="tags">
+          {% for tag in page.taxonomies.tags %}<li><a href="{{ get_taxonomy_url(kind='tags', name=tag) }}">#{{ tag }}</a></li>{% endfor %}
+        </ul>
+      {% endif %}
+    </header>
+    <div
+      class="article-body"
+      data-mermaid="{{ get_url(path='vendor/mermaid/mermaid.min.js') }}"
+      data-copy-label="{{ trans(key='copy_code') }}"
+      data-copied-label="{{ trans(key='copied_code') }}"
+    >{{ page.content | safe }}</div>
+    {% if page.lower or page.higher %}
+      <nav class="article-pagination" aria-label="{{ trans(key='article_pagination') }}">
+        {% if page.higher %}
+          <a class="article-pagination-item" href="{{ page.higher.permalink }}"><span>{{ trans(key="older_article") }}</span><strong>{{ page.higher.title }}</strong></a>
+        {% else %}<span></span>{% endif %}
+        {% if page.lower %}
+          <a class="article-pagination-item article-pagination-next" href="{{ page.lower.permalink }}"><span>{{ trans(key="newer_article") }}</span><strong>{{ page.lower.title }}</strong></a>
+        {% endif %}
+      </nav>
+    {% endif %}
+  </article>
+{% endblock content %}
+
+{% block right_sidebar %}
+  {% if page.toc %}{% include "partials/toc.html" %}{% endif %}
+{% endblock right_sidebar %}
+
+{% block scripts %}
+  <script src="{{ get_url(path='js/code.js') }}" defer></script>
+  <script src="{{ get_url(path='js/toc.js') }}" defer></script>
+  <script src="{{ get_url(path='js/article.js') }}" defer></script>
+{% endblock scripts %}

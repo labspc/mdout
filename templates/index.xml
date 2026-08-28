@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ config.title }}</title>
+    <link>{{ get_url(path="/", lang=lang) }}</link>
+    <atom:link href="{{ feed_url | safe }}" rel="self" type="application/rss+xml" />
+    <description>{{ config.description }}</description>
+    <language>{{ trans(key="locale") }}</language>
+    <ttl>60</ttl>
+    <generator>mdout</generator>
+    {% for page in pages %}{% set post_path = page.relative_path | replace(from="posts/", to="") %}{% if post_path != page.relative_path %}
+    <item>
+      <title>{{ page.title }}</title>
+      <link>{{ page.permalink | safe }}</link>
+      <guid>{{ page.permalink | safe }}</guid>
+      <description>{{ page.description }}</description>
+      {% if page.date %}<pubDate>{{ page.date | date(format="%a, %d %b %Y 00:00:00 +0000") }}</pubDate>{% endif %}
+      {% for tag in page.taxonomies.tags %}<category>{{ tag }}</category>{% endfor %}
+    </item>
+    {% endif %}{% endfor %}
+  </channel>
+</rss>

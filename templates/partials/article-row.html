@@ -1,0 +1,10 @@
+<article class="article-row">
+  <h2><a href="{{ article.permalink }}">{{ article.title }}</a></h2>
+  {% if article.date %}{% set date_format = trans(key="date_format") %}<time datetime="{{ article.date }}">{{ article.date | date(format=date_format) }}</time>{% endif %}
+  {% if article.description %}<p>{{ article.description }}</p>{% endif %}
+  {% if article.taxonomies.tags %}
+    <ul class="tags">
+      {% for tag in article.taxonomies.tags %}<li><a href="{{ get_taxonomy_url(kind='tags', name=tag) }}">#{{ tag }}</a></li>{% endfor %}
+    </ul>
+  {% endif %}
+</article>

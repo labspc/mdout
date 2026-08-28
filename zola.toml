@@ -1,0 +1,161 @@
+base_url = "https://example.com/"
+title = "mdout"
+description = "Markdown in, HTML out. Built on Zola."
+default_language = "zh"
+author = ""
+output_dir = "public"
+compile_sass = true
+minify_html = true
+build_search_index = true
+generate_feeds = true
+feed_filenames = ["index.xml", "llms.txt"]
+generate_sitemap = true
+generate_robots_txt = true
+
+taxonomies = [{ name = "tags", feed = false }]
+
+[markdown]
+smart_punctuation = true
+github_alerts = true
+insert_anchor_links = "right"
+external_links_target_blank = true
+external_links_no_referrer = true
+
+[markdown.highlighting]
+style = "inline"
+light_theme = "github-light"
+dark_theme = "github-dark"
+error_on_missing_language = false
+
+[search]
+index_format = "fuse_json"
+include_title = true
+include_description = true
+include_date = true
+include_path = true
+include_content = true
+
+# Interface copy is centralized here because templates use Zola's trans().
+# Keep the same keys in the default and English translation tables.
+[translations]
+site_navigation = "站点导航"
+main_navigation = "主导航"
+home = "首页"
+articles = "文章"
+archive = "归档"
+tags = "标签"
+search_articles = "搜索文章"
+search = "搜索"
+toggle_theme = "切换深色模式"
+language = "语言"
+reading_entries = "阅读入口"
+about = "关于"
+site_tools = "站点工具"
+link_status = "外链状态"
+breadcrumbs = "面包屑"
+minute_read = "分钟阅读"
+older_article = "较早文章"
+newer_article = "较新文章"
+article_pagination = "文章翻页"
+toc = "目录"
+recent_articles = "最近文章"
+no_articles_home = "还没有文章。把 Markdown 文件放进 content/posts/，下一次构建时会出现在这里。"
+no_articles = "还没有文章。"
+no_archive = "还没有可以归档的文章。"
+tag_cloud = "标签云"
+tag_count = "个标签"
+article_count = "篇文章"
+article_unit = "篇"
+anchor_link = "链接到本节"
+links_recorded = "个外部链接。最近报告生成于"
+links_not_checked = "尚未运行外链检查。"
+links_empty = "当前没有已记录的外部链接。"
+source = "来源"
+not_found_title = "页面不存在"
+not_found_description = "这个地址没有对应的内容，可能已经移动或被删除。"
+back_home = "返回首页"
+search_placeholder = "搜索标题、正文或标签"
+close_search = "关闭搜索"
+search_prompt = "输入关键词开始搜索"
+search_loading = "正在载入索引…"
+search_results = "条结果"
+search_empty = "没有找到匹配文章"
+search_error = "搜索索引载入失败，请刷新后重试"
+copy_code = "复制代码"
+copied_code = "代码已复制"
+date_format = "%Y年%m月%d日"
+archive_date_format = "%m月%d日"
+locale = "zh-CN"
+opengraph_locale = "zh_CN"
+
+[languages.en]
+title = "mdout"
+description = "Markdown in, HTML out. Built on Zola."
+generate_feeds = true
+feed_filenames = ["index.xml", "llms.txt"]
+taxonomies = [{ name = "tags", feed = false }]
+build_search_index = true
+
+[languages.en.search]
+index_format = "fuse_json"
+include_title = true
+include_description = true
+include_date = true
+include_path = true
+include_content = true
+
+[languages.en.translations]
+site_navigation = "Site navigation"
+main_navigation = "Main navigation"
+home = "Home"
+articles = "Articles"
+archive = "Archive"
+tags = "Tags"
+search_articles = "Search articles"
+search = "Search"
+toggle_theme = "Toggle dark mode"
+language = "Language"
+reading_entries = "Reading"
+about = "About"
+site_tools = "Site tools"
+link_status = "Link status"
+breadcrumbs = "Breadcrumbs"
+minute_read = "min read"
+older_article = "Older article"
+newer_article = "Newer article"
+article_pagination = "Article pagination"
+toc = "Contents"
+recent_articles = "Recent articles"
+no_articles_home = "No articles yet. Add Markdown files to content/posts/ and they will appear after the next build."
+no_articles = "No articles yet."
+no_archive = "No published articles to archive yet."
+tag_cloud = "Tag cloud"
+tag_count = "tags"
+article_count = "articles"
+article_unit = "articles"
+anchor_link = "Link to this section"
+links_recorded = "external links. Latest report generated at"
+links_not_checked = "External links have not been checked yet."
+links_empty = "No external links are currently recorded."
+source = "Source"
+not_found_title = "Page not found"
+not_found_description = "No page exists at this address. It may have moved or been removed."
+back_home = "Back home"
+search_placeholder = "Search titles, content, or tags"
+close_search = "Close search"
+search_prompt = "Type to search articles"
+search_loading = "Loading search index…"
+search_results = "results"
+search_empty = "No matching articles found"
+search_error = "The search index could not be loaded. Refresh and try again."
+copy_code = "Copy code"
+copied_code = "Code copied"
+date_format = "%B %d, %Y"
+archive_date_format = "%b %d"
+locale = "en-US"
+opengraph_locale = "en_US"
+
+[extra]
+tagline = "Markdown in, HTML out. Built on Zola."
+repository_url = ""
+copyright = ""

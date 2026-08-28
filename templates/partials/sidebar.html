@@ -1,0 +1,20 @@
+<aside class="sidebar" aria-label="{{ trans(key='site_navigation') }}">
+  <a class="site-title" href="{{ get_url(path='/', lang=lang) }}">{{ config.title }}</a>
+  <nav class="site-navigation" aria-label="{{ trans(key='main_navigation') }}">
+    <a href="{{ get_url(path='/', lang=lang) }}">{{ trans(key="home") }}</a>
+    <a href="{{ get_url(path='posts', lang=lang) }}">{{ trans(key="articles") }}</a>
+    <a href="{{ get_url(path='archive', lang=lang) }}">{{ trans(key="archive") }}</a>
+    {% if tags_taxonomy and tags_taxonomy.items | length > 0 %}<a href="{{ get_url(path='tags', lang=lang) }}">{{ trans(key="tags") }}</a>{% endif %}
+  </nav>
+  <div class="sidebar-tools">
+    <button class="search-open" type="button" aria-label="{{ trans(key='search_articles') }}" title="{{ trans(key='search_articles') }}">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+      <span>{{ trans(key="search") }}</span>
+    </button>
+    {% include "partials/language-switcher.html" %}
+    <button class="theme-toggle" type="button" aria-label="{{ trans(key='toggle_theme') }}" title="{{ trans(key='toggle_theme') }}">
+      <svg class="theme-icon theme-icon-sun" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path></svg>
+      <svg class="theme-icon theme-icon-moon" aria-hidden="true" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path></svg>
+    </button>
+  </div>
+</aside>

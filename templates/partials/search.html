@@ -1,0 +1,30 @@
+<div
+  class="search-dialog"
+  role="dialog"
+  aria-modal="true"
+  aria-label="{{ trans(key='search_articles') }}"
+  hidden
+  data-index="{{ get_url(path='search_index.' ~ lang ~ '.json') }}"
+  data-locale="{{ trans(key='locale') }}"
+  data-loading="{{ trans(key='search_loading') }}"
+  data-prompt="{{ trans(key='search_prompt') }}"
+  data-results="{{ trans(key='search_results') }}"
+  data-empty="{{ trans(key='search_empty') }}"
+  data-error="{{ trans(key='search_error') }}"
+>
+  <div class="search-panel">
+    <div class="search-field">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+      <input class="search-input" type="search" placeholder="{{ trans(key='search_placeholder') }}" aria-label="{{ trans(key='search_placeholder') }}" autocomplete="off" spellcheck="false">
+      <button class="search-close" type="button" aria-label="{{ trans(key='close_search') }}" title="{{ trans(key='close_search') }}">×</button>
+    </div>
+    <div class="search-status" aria-live="polite">{{ trans(key="search_prompt") }}</div>
+    <div class="search-results" role="listbox"></div>
+  </div>
+</div>
+{% set search_posts = get_section(path="posts/_index.md") %}
+<script class="search-tags" type="application/json">[
+  {% for article in search_posts.pages %}
+    {"path": {{ article.path | json_encode | safe }}, "tags": {{ article.taxonomies.tags | default(value=[]) | json_encode | safe }}}{% if not loop.last %},{% endif %}
+  {% endfor %}
+]</script>

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <article class="intro">{{ section.content | safe }}</article>
+  {% set posts = get_section(path="posts/_index.md") %}
+  <section class="article-list" aria-labelledby="recent-heading">
+    <h1 id="recent-heading">{{ trans(key="recent_articles") }}</h1>
+    {% for article in posts.pages %}
+      {% include "partials/article-row.html" %}
+      {% if loop.index == 10 %}{% break %}{% endif %}
+    {% else %}
+      <p class="empty-state">{{ trans(key="no_articles_home") }}</p>
+    {% endfor %}
+  </section>
+{% endblock content %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}<title>{{ page.title }} | {{ config.title }}</title>{% endblock title %}
+{% block description %}{{ page.description }}{% endblock description %}
+{% block content %}
+  {% set report = load_data(path="reports/links.json", format="json") %}
+  <section class="external-links">
+    <h1>{{ page.title }}</h1>
+    {% if report.generatedAt %}
+      <p class="page-summary">{{ report.links | length }} {{ trans(key="links_recorded") }} {{ report.generatedAt }}.</p>
+    {% else %}
+      <p class="page-summary">{{ trans(key="links_not_checked") }}</p>
+    {% endif %}
+    {% if report.links | length == 0 %}
+      <p>{{ trans(key="links_empty") }}</p>
+    {% else %}
+      {% for url, link in report.links %}
+        <article class="external-link">
+          <h2><a href="{{ url }}" rel="noopener noreferrer">{{ url }}</a></h2>
+          <p><span class="link-status status-{{ link.status }}">{{ link.status }}</span>{% if link.httpStatus %} · HTTP {{ link.httpStatus }}{% endif %}</p>
+          <p>{{ trans(key="source") }}: {{ link.sources | join(sep=", ") }}</p>
+        </article>
+      {% endfor %}
+    {% endif %}
+  </section>
+{% endblock content %}

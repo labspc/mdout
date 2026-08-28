@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}<title>{{ section.title }} | {{ config.title }}</title>{% endblock title %}
+{% block content %}
+  <section class="article-list">
+    <h1>{{ section.title }}</h1>
+    {% if section.content %}<div class="section-intro">{{ section.content | safe }}</div>{% endif %}
+    {% for article in section.pages %}
+      {% include "partials/article-row.html" %}
+    {% else %}
+      <p class="empty-state">{{ trans(key="no_articles") }}</p>
+    {% endfor %}
+  </section>
+{% endblock content %}

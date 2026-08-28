@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}<title>{{ trans(key="tag_cloud") }} | {{ config.title }}</title>{% endblock title %}
+{% block content %}
+  <section class="taxonomy-page">
+    <h1>{{ trans(key="tag_cloud") }}</h1>
+    <p class="page-summary">{{ terms | length }} {{ trans(key="tag_count") }}</p>
+    <div class="tag-cloud">
+      {% for term in terms | sort(attribute="page_count") | reverse %}
+        {% set count = term.pages | length %}
+        {% set latest = term.pages | first %}
+        <a class="tag-weight-{% if count >= 5 %}2{% elif count >= 2 %}1{% else %}0{% endif %}" href="{{ term.permalink }}"><strong>#{{ term.name }}</strong><span>{{ count }} {{ trans(key="article_unit") }}{% if latest and latest.date %} · {{ latest.date | date(format="%Y-%m-%d") }}{% endif %}</span></a>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock content %}

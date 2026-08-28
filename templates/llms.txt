@@ -1,0 +1,26 @@
+# {{ config.title }}
+
+> Markdown in, HTML out. Built on Zola.
+
+Language: {{ trans(key="locale") }}
+
+## Usage
+
+- Automated indexing and summarization of public pages are permitted.
+- When quoting or summarizing, cite the canonical article URL.
+- This file grants no rights beyond the license that applies to the original content.
+
+## Content Index
+
+{% for page in pages -%}{% set post_path = page.relative_path | replace(from="posts/", to="") %}{% if post_path != page.relative_path %}
+- {{ page.permalink | safe }}
+{% endif %}{% endfor %}
+
+## Site
+
+- RSS: {{ get_url(path="index.xml", lang=lang) }}
+- Sitemap: {{ get_url(path="sitemap.xml") }}
+{% set tags_taxonomy = get_taxonomy(kind="tags", required=false) -%}
+{% if tags_taxonomy and tags_taxonomy.items | length > 0 -%}
+- Tags: {{ get_url(path="tags", lang=lang) }}
+{% endif %}
