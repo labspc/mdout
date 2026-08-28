@@ -1,8 +1,8 @@
 ---
-title: mdout
-description: Markdown in, HTML out. Built on Zola.
+title: labspc
+description: Notes on technology, reading, and everyday life.
 sort_by: none
 template: index.html
 ---
 
-Markdown in, HTML out. Built on Zola.
+Notes on technology, reading, and everyday life.

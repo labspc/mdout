@@ -2,7 +2,7 @@ name: Deploy GitHub Pages
 
 on:
   push:
-    branches: [main, blog]
+    branches: [blog]
   workflow_dispatch:
 
 permissions:
@@ -16,15 +16,15 @@ concurrency:
 
 jobs:
   build:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.ref_name == vars.PAGES_BRANCH || (vars.PAGES_BRANCH == '' && github.ref_name == 'main') }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
       - uses: taiki-e/install-action@v2
         with:
           tool: zola@0.23.4
+      - run: cargo install mdout --version 0.2.0 --locked
       - id: site
         name: Resolve site URL
         env:
@@ -42,10 +42,8 @@ jobs:
             fi
           fi
           echo "site_url=$site_url" >> "$GITHUB_OUTPUT"
-      - run: cargo test --locked
-      - run: cargo run --locked -- check
-      - run: scripts/verify-fixture.sh
-      - run: cargo run --locked -- build --base-url "${{ steps.site.outputs.site_url }}"
+      - run: mdout check
+      - run: mdout build --base-url "${{ steps.site.outputs.site_url }}"
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

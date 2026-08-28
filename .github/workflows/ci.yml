@@ -11,17 +11,13 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: dtolnay/rust-toolchain@stable
-        with:
-          components: rustfmt
       - uses: Swatinem/rust-cache@v2
       - uses: taiki-e/install-action@v2
         with:
           tool: zola@0.23.4
-      - run: cargo fmt --check
-      - run: cargo test --locked
-      - run: cargo run --locked -- doctor
-      - run: cargo run --locked -- check
-      - run: scripts/verify-fixture.sh
-      - run: cargo run --locked -- build --base-url https://example.com/
+      - run: cargo install mdout --version 0.2.0 --locked
+      - run: mdout doctor
+      - run: mdout check
+      - run: mdout build --base-url https://example.com/

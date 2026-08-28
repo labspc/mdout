@@ -1,8 +1,8 @@
 base_url = "https://www.labspc.com/"
-title = "mdout"
-description = "Markdown in, HTML out. Built on Zola."
+title = "labspc"
+description = "这里记录技术、阅读和日常思考。"
 default_language = "zh"
-author = ""
+author = "labspc"
 output_dir = "public"
 compile_sass = true
 minify_html = true
@@ -38,6 +38,7 @@ include_content = true
 # Interface copy is centralized here because templates use Zola's trans().
 # Keep the same keys in the default and English translation tables.
 [translations]
+site_tagline = "技术、阅读与日常思考"
 site_navigation = "站点导航"
 main_navigation = "主导航"
 home = "首页"
@@ -89,8 +90,8 @@ locale = "zh-CN"
 opengraph_locale = "zh_CN"
 
 [languages.en]
-title = "mdout"
-description = "Markdown in, HTML out. Built on Zola."
+title = "labspc"
+description = "Notes on technology, reading, and everyday life."
 generate_feeds = true
 feed_filenames = ["index.xml", "llms.txt"]
 taxonomies = [{ name = "tags", feed = false }]
@@ -105,6 +106,7 @@ include_path = true
 include_content = true
 
 [languages.en.translations]
+site_tagline = "Technology, reading, and everyday notes"
 site_navigation = "Site navigation"
 main_navigation = "Main navigation"
 home = "Home"
@@ -156,6 +158,6 @@ locale = "en-US"
 opengraph_locale = "en_US"
 
 [extra]
-tagline = "Markdown in, HTML out. Built on Zola."
-repository_url = ""
-copyright = ""
+tagline = "技术、阅读与日常思考"
+repository_url = "https://github.com/labspc/mdout/tree/blog"
+copyright = "Copyright 2026 labspc"

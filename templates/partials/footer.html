@@ -2,7 +2,7 @@
   <div class="site-footer-primary">
     <div class="site-footer-identity">
       <a class="site-footer-title" href="{{ get_url(path='/', lang=lang) }}">{{ config.title }}</a>
-      <p>{{ config.extra.tagline }}</p>
+      <p>{{ trans(key="site_tagline") }}</p>
     </div>
     <nav class="site-footer-reading" aria-label="{{ trans(key='reading_entries') }}">
       <a href="{{ get_url(path='posts', lang=lang) }}">{{ trans(key="articles") }}</a>

@@ -1,6 +1,8 @@
 ---
 title: About
-description: Markdown in, HTML out. Built on Zola.
+description: About labspc and this blog.
 ---
 
-Markdown in, HTML out. Built on Zola.
+This is labspc's personal blog.
+
+It collects technical work, reading notes, and everyday thoughts.
