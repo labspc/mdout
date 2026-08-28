@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+      - uses: Swatinem/rust-cache@v2
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: zola@0.23.4
+      - name: Verify tag matches Cargo version
+        run: |
+          crate_version="$(sed -n 's/^version = "\(.*\)"/\1/p' Cargo.toml | head -n 1)"
+          if [ "v${crate_version}" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match Cargo version $crate_version" >&2
+            exit 1
+          fi
+      - run: cargo fmt --check
+      - run: cargo clippy --locked --all-targets -- -D warnings
+      - run: cargo test --locked
+      - run: cargo run --locked -- doctor
+      - run: cargo run --locked -- check
+      - run: scripts/verify-fixture.sh
+      - run: cargo run --locked -- build --base-url https://example.com/
+      - name: Package release
+        run: |
+          package="mdout-${GITHUB_REF_NAME}"
+          git archive \
+            --format=tar.gz \
+            --prefix="${package}/" \
+            --output="${package}.tar.gz" \
+            "$GITHUB_REF_NAME"
+          sha256sum "${package}.tar.gz" > SHA256SUMS
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            "mdout-${GITHUB_REF_NAME}.tar.gz" \
+            SHA256SUMS \
+            --verify-tag \
+            --generate-notes \
+            --title "mdout $GITHUB_REF_NAME"
