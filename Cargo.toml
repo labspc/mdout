@@ -1,22 +1,46 @@
 [package]
 name = "mdout"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 description = "Markdown in, HTML out. Built on Zola."
 license = "MIT"
 repository = "https://github.com/labspc/mdout"
+readme = "README.md"
+rust-version = "1.85"
+keywords = ["blog", "markdown", "zola", "static-site", "cli"]
+categories = ["command-line-utilities", "web-programming"]
+include = [
+    "/src/**",
+    "/content/**",
+    "/reports/**",
+    "/sass/**",
+    "/static/**",
+    "/templates/**",
+    "/scaffold/**",
+    "/Cargo.toml",
+    "/Cargo.lock",
+    "/README.md",
+    "/LICENSE",
+    "/THIRD_PARTY_NOTICES",
+    "/CHANGELOG.md",
+    "/zola.toml",
+    "/mdout.toml",
+    "/.gitignore",
+]
 
 [dependencies]
 anyhow = "1.0"
 chrono = { version = "0.4", features = ["serde"] }
 clap = { version = "4.5", features = ["derive"] }
 futures = "0.3"
+include_dir = "0.7"
 regex = "1.11"
 reqwest = { version = "0.12", default-features = false, features = ["rustls-tls"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 serde_yaml = "0.9"
 tokio = { version = "1.47", features = ["macros", "rt-multi-thread"] }
+toml_edit = "0.23"
 walkdir = "2.5"
 
 [dev-dependencies]

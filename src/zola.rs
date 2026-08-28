@@ -2,7 +2,7 @@ use std::{env, fs, path::Path, process::Command};
 
 use anyhow::{Context, Result, bail, ensure};
 
-const REQUIRED_ZOLA_VERSION: &str = "0.23.4";
+pub const REQUIRED_ZOLA_VERSION: &str = "0.23.4";
 
 fn command() -> Command {
     if let Ok(binary) = env::var("MDOUT_ZOLA") {
@@ -37,6 +37,7 @@ pub fn doctor() -> Result<()> {
         Path::new("content").is_dir(),
         "content/ was not found. Run mdout from the site root."
     );
+    validate_manifest()?;
 
     let output = command()
         .arg("--version")
@@ -56,6 +57,37 @@ pub fn doctor() -> Result<()> {
     println!("Zola {version}");
     println!("zola.toml ok");
     println!("content/ ok");
+    Ok(())
+}
+
+fn validate_manifest() -> Result<()> {
+    let source = fs::read_to_string("mdout.toml")
+        .context("mdout.toml was not found. Run mdout from a v0.2+ site root")?;
+    let document = source
+        .parse::<toml_edit::DocumentMut>()
+        .context("mdout.toml is not valid TOML")?;
+    let format = document["format_version"]
+        .as_integer()
+        .context("mdout.toml must define format_version")?;
+    ensure!(
+        format == 1,
+        "unsupported mdout.toml format_version {format}"
+    );
+    let mdout = document["mdout_version"]
+        .as_str()
+        .context("mdout.toml must define mdout_version")?;
+    ensure!(
+        mdout == env!("CARGO_PKG_VERSION"),
+        "this site requires mdout {mdout}, but the installed CLI is {}",
+        env!("CARGO_PKG_VERSION")
+    );
+    let zola = document["zola_version"]
+        .as_str()
+        .context("mdout.toml must define zola_version")?;
+    ensure!(
+        zola == REQUIRED_ZOLA_VERSION,
+        "mdout.toml requires Zola {zola}, but this CLI requires {REQUIRED_ZOLA_VERSION}"
+    );
     Ok(())
 }
 

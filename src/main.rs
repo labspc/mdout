@@ -1,4 +1,5 @@
 mod check;
+mod init;
 mod links;
 mod zola;
 
@@ -20,6 +21,20 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Command {
+    /// Create a complete mdout blog project.
+    Init {
+        /// Directory to create. It must not exist or must be empty.
+        path: PathBuf,
+        /// Site title written to zola.toml.
+        #[arg(long, default_value = "My mdout blog")]
+        title: String,
+        /// Canonical site URL written to zola.toml.
+        #[arg(long, default_value = "https://example.com/")]
+        base_url: String,
+        /// Optional author name written to zola.toml.
+        #[arg(long, default_value = "")]
+        author: String,
+    },
     /// Diagnose the local mdout and Zola environment.
     Doctor,
     /// Validate Markdown content without building the site.
@@ -61,6 +76,12 @@ enum Command {
 #[tokio::main]
 async fn main() -> Result<()> {
     match Cli::parse().command {
+        Command::Init {
+            path,
+            title,
+            base_url,
+            author,
+        } => init::run(&path, &title, &base_url, &author),
         Command::Doctor => zola::doctor(),
         Command::Check { directory } => check::run(&directory),
         Command::Build {
