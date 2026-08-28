@@ -1,4 +1,4 @@
-base_url = "https://example.com/"
+base_url = "https://www.labspc.com/"
 title = "mdout"
 description = "Markdown in, HTML out. Built on Zola."
 default_language = "zh"
