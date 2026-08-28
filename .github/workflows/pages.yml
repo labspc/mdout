@@ -19,7 +19,7 @@ jobs:
     if: ${{ github.event_name == 'workflow_dispatch' || github.ref_name == vars.PAGES_BRANCH || (vars.PAGES_BRANCH == '' && github.ref_name == 'main') }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
       - uses: taiki-e/install-action@v2
